@@ -10,6 +10,8 @@ import { AppService } from './app.service';
 export class AppComponent implements OnInit {
   public queryString = '';
   public output = 'Input query';
+
+  // Subject to manage a key stroke event to observable.
   private querySubject = new Subject<string>();
 
   public constructor(public appService: AppService) {}
@@ -19,6 +21,7 @@ export class AppComponent implements OnInit {
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
+        // Switch over to the observable returned by app service.
         switchMap((value) => {
           console.log('input:', value);
           return this.appService.getValue(value);
